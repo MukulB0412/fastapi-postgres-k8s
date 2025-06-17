@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+  web:
+    build: ./app  # ⬅️ point to the folder where Dockerfile is
+    working_dir: /app
+    ports:
+      - "8000:8000"
+    environment:
+      DB_HOST: db
+      DB_USER: user
+      DB_PASS: pass
+      DB_NAME: mydb
+    depends_on:
+      - db
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: mydb
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:  # ⬅️ match this name with volume above (was `postgres_data`)
